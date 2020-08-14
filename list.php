@@ -31,6 +31,24 @@ preg_match_all('@<a .+?(\d+).html.+?>\s*(.+?)\s*</a>@si', $trang_tiep, $links);
 preg_match('@<a class="nextPage".+?list%2F(.+?).html.+?>@si', $single_curl, $nextpage);
 
 // tai ve
+if (isset($_GET['view'])) {
+	$s = $_GET['s'] ?? 0;
+	$e = $_GET['e'] ?? count($links[1]);
+	for ($i = $s; $i < $e; $i++) { 
+		echo file_get_contents($base_url . 'view.php?id=' . $links[1][$i]);
+	}
+	// download
+	header('Content-Description: File Transfer');
+	header('Content-Disposition: attachment; filename=' . basename($file));
+	header('Expires: 0');
+	header('Cache-Control: must-revalidate');
+	header('Pragma: public');
+	header('Content-Length: ' . filesize($file));
+	header("Content-Type: text/plain");
+	readfile($file);
+	exit('ok');
+}
+// tai ve
 if (isset($_GET['download'])) {
 	$s = $_GET['s'] ?? 0;
 	$e = $_GET['e'] ?? count($links[1]);
@@ -60,6 +78,7 @@ if (isset($_GET['download'])) {
 echo '<h1>' . $tieude[1] . '</h1>';
 echo '<p>' . $mota[1] . '</p>';
 echo '<a href="list.php?id=' . $id . '&download">Tai ve</a>';
+echo ' | <a href="list.php?id=' . $id . '&view">Xem</a>';
 echo '<hr>';
 
 for ($i=0; $i < count($links[1]); $i++) { 
