@@ -32,13 +32,15 @@ preg_match('@<a class="nextPage".+?list%2F(.+?).html.+?>@si', $single_curl, $nex
 
 // tai ve
 if (isset($_GET['download'])) {
+	$s = $_GET['s'] ?? 0;
+	$e = $_GET['e'] ?? count($links[1]);
 	if (file_exists("$id.html")) {
 		unlink("$id.html");
 	}
-	foreach ($links[1] as $link) {
+	for ($i = $s; $i < $e; $i++) { 
 		$file = "$id.html";
 		$text = fopen($file, "a+") or die("Unable to open file!");
-		fwrite($text, file_get_contents($base_url . 'view.php?id=' . $link));
+		fwrite($text, file_get_contents($base_url . 'view.php?id=' . $links[1][$i]));
 		fclose($text);
 	}
 	// download
