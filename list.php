@@ -5,7 +5,7 @@
 include 'functions.php';
 
 $id = $_GET['id'] ?? 10577;
-$base_url = 'http://localhost/curl_sinodancc/';
+$base_url = 'https://truyensac.herokuapp.com/';
 
 $single_curl = single_curl('https://dichngay.com/translate?u=https://m.sinodan.cc/list/' . $id . '.html');
 
