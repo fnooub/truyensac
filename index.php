@@ -25,6 +25,7 @@ echo ' | <a href="index.php?book=1_8418_1">Xem nhiều</a>';
 echo ' | <a href="index.php?book=2_8418_1">Xem nhiều tháng</a>';
 echo ' | <a href="index.php?book=3_8418_1">Sách mới</a>';
 echo ' | <a href="index.php?book=4_8418_1">Số lượng chữ</a>';
+echo '<p>nguồn dịch bởi dichngay.com</p>';
 echo '<hr>';
 
 for ($i=0; $i < count($links[1]); $i++) { 
