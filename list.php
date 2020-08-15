@@ -84,7 +84,7 @@ if (isset($_GET['list_download']) && $id) {
 		for ($i = 1; $i <= $count; $i++) { 
 			$start = ($i - 1) * 10 + 1; //10 la so khoang cach giua bd va kt
 			$bd = ($i == 1) ? $start - 1 : $start;
-			$kt = ($i == 3) ? $tong : $start + 9;
+			$kt = ($i == $count) ? $tong : $start + 9;
 
 			echo '<p><a href="list.php?id=' . $id . $nextpg . '&download&s=' . $bd . '&e=' . $kt . '">' . $bd . ' - ' . $kt . '</a></p>';
 		}
