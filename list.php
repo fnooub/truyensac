@@ -3,7 +3,7 @@
 include 'functions.php';
 
 $id = $_GET['id'] ?? 10577;
-$base_url = 'http://localhost/curl_sinodancc/';
+$base_url = 'http://truyensac.herokuapp.com/';
 
 $single_curl = single_curl('https://dichngay.com/translate?u=https://m.sinodan.cc/list/' . $id . '.html');
 
@@ -30,6 +30,24 @@ preg_match_all('@<a .+?(\d+).html.+?>\s*(.+?)\s*</a>@si', $trang_tiep, $links);
 // nextpage
 preg_match('@<a class="nextPage".+?list%2F(.+?).html.+?>@si', $single_curl, $nextpage);
 
+// xem
+if (isset($_GET['get'])) {
+	$s = $_GET['s'] ?? 0;
+	$e = $_GET['e'] ?? count($links[1]);
+	if (isset($_GET['txt'])) {
+		echo header("Content-Type: text/plain");
+		$txt = '&txt';
+	} else {
+		echo '<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">';
+		$txt = null;
+	}
+	for ($i = $s; $i < $e; $i++) { 
+		$urls[] = $base_url . 'view.php?id=' . $links[1][$i] . $txt;
+	}
+	$content = multi_curl($urls);
+	echo $content;
+	exit;
+}
 // xem
 if (isset($_GET['view'])) {
 	$s = $_GET['s'] ?? 0;
@@ -86,7 +104,7 @@ if (isset($_GET['list_download']) && $id) {
 			$bd = ($i == 1) ? $start - 1 : $start;
 			$kt = ($i == $count) ? $tong : $start + 9;
 
-			echo '<p><a href="list.php?id=' . $id . $nextpg . '&download&s=' . $bd . '&e=' . $kt . '">' . $bd . ' - ' . $kt . '</a></p>';
+			echo '<p><a href="list.php?id=' . $id . $nextpg . '&download&s=' . $bd . '&e=' . $kt . '">' . $bd . ' - ' . $kt . '</a> ~> <a href="list.php?id=' . $id . $nextpg . '&get&txt&s=' . $bd . '&e=' . $kt . '">GET</a></p>';
 		}
 	} else {
 		echo "<p>Ít chương tải ngoài trang chủ</p>";
@@ -101,6 +119,7 @@ echo '<a href="list.php?id=' . $id . $nextpg . '&download">Tai ve TXT</a>';
 echo ' | <a href="list.php?id=' . $id . $nextpg . '&list_download">Tai ve list</a>';
 echo ' | <a href="list.php?id=' . $id . $nextpg . '&view">Xem HTML</a>';
 echo ' | <a href="list.php?id=' . $id . $nextpg . '&view&txt">Xem TXT</a>';
+echo ' | <a href="list.php?id=' . $id . $nextpg . '&get&txt">Get TXT</a>';
 echo '<hr>';
 
 for ($i=0; $i < count($links[1]); $i++) { 
@@ -110,4 +129,3 @@ for ($i=0; $i < count($links[1]); $i++) {
 if (isset($nextpage[1])) {
 	echo '<a href="list.php?id=' . $nextpage[1] . '&nextpg">Trang tiep</a>';
 }
-
