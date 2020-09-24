@@ -13,15 +13,17 @@ $data = json_decode(file_get_contents('sactxt_data.json'));
 <div class="w3-container">
 
 	<h2><?= count($data) ?> truyện</h2>
-	
+	<?php $count = 1 ?>
 	<?php foreach ($data as $row): ?>
 		
 		<div class="w3-section w3-border w3-round w3-padding w3-white">
 			<h3 class="w3-medium"><a href="https://docs.google.com/uc?id=<?= $row->drive_id ?>"><?= $row->tieude ?></a></h3>
-			<div class="w3-tag w3-small"><?= myfilesize($row->size) ?></div>
+			<span class="w3-tag w3-small" id="<?= $count ?>">#<?= $count ?></span>
+			<span class="w3-tag w3-small"><?= $row->count_chapter ?> chương</span>
+			<span class="w3-tag w3-small"><?= myfilesize($row->size) ?></span>
 			<p class="w3-small w3-text-gray"><?= $row->mota ?></p>
 		</div>
-
+		<?php $count++ ?>
 	<?php endforeach ?>
 
 </div>
