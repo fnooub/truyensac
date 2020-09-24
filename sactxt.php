@@ -21,6 +21,7 @@ $data = json_decode(file_get_contents('sactxt_data.json'));
 			<span class="w3-tag w3-small" id="<?= $count ?>">#<?= $count ?></span>
 			<span class="w3-tag w3-small"><?= $row->count_chapter ?> chương</span>
 			<span class="w3-tag w3-small"><?= myfilesize($row->size) ?></span>
+			<a href="https://docs.google.com/uc?id=<?= $row->drive_id_chinese ?>"><span class="w3-tag w3-small">Raw Chinese</span></a>
 			<p class="w3-small w3-text-gray"><?= $row->mota ?></p>
 		</div>
 		<?php $count++ ?>
