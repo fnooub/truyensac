@@ -1,39 +1,90 @@
 <?php
 
-include 'functions.php';
+$data = json_decode(file_get_contents('data.json'), true);
 
-$id = $_GET['id'] ?? 10577;
-$book = $_GET['book'] ?? '8418_1';
-
-$base_url = 'http://truyensac.herokuapp.com/';
-
-$single_curl = single_curl('https://dichngay.com/translate?u=https://m.sinodan.cc/book/' . $book . '.html');
-
-$single_curl = html_entity_decode($single_curl);
-
-preg_match_all('@<a class="name" href=".+?(\d+).html.+?" target="_parent">(.+?)</a>@si', $single_curl, $links);
-
-// trang tiep
-preg_match('@<a class="nextPage" href=".+?book%2F(.+?).html.+?" target="_parent">@si', $single_curl, $nextpage);
-// trang tiep
-preg_match('@<a class="endPage" href=".+?book%2F(.+?).html.+?" target="_parent">@si', $single_curl, $endpage);
-
-// in ra
-echo '<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">';
-echo '<a href="index.php?book=8418_1">Mới đổi</a>';
-echo ' | <a href="index.php?book=1_8418_1">Xem nhiều</a>';
-echo ' | <a href="index.php?book=2_8418_1">Xem nhiều tháng</a>';
-echo ' | <a href="index.php?book=3_8418_1">Sách mới</a>';
-echo ' | <a href="index.php?book=4_8418_1">Số lượng chữ</a>';
-echo '<p>nguồn dịch bởi dichngay.com</p>';
-echo '<hr>';
-
-for ($i=0; $i < count($links[1]); $i++) { 
-	echo '<p><a href="list.php?id=' . $links[1][$i] . '">' . $links[2][$i] . '</a></p>';
+if (isset($_GET['text'])) {
+	$searchword = isset($_GET['text']) ? $_GET['text'] : null;
+	// search
+	$matches = array();
+	foreach($data as $k => $v) {
+		$data_s = $v['tieude'] . ' ' . $v['mota'];
+		if(preg_match("/\b$searchword\b/iu", $data_s)) {
+			$matches[$k] = array('tieude' => $v['tieude'], 'mota' => $v['mota'], 'drive_id' => $v['drive_id'], 'count_chapter' => $v['count_chapter'], 'size' => $v['size']);
+		}
+	}
+	
+} else {
+	$matches = $data;
 }
 
-if (isset($nextpage[1])) {
-	echo '<hr>';
-	echo '<a href="index.php?book=' . $nextpage[1] . '">Trang tiep</a>';
-	echo ' | <a href="index.php?book=' . $endpage[1] . '">Trang cuoi</a>';
+
+// pagination
+include "Paginate.php";
+
+$total = count($matches);
+$keyword = isset($_GET['text']) ? '&text=' . $_GET['text'] : null;
+
+$config['current_page'] = isset($_GET['trang']) ? $_GET['trang'] : 1;
+$config['total_rows'] = $total;
+$config['base_url'] = '?trang=(:num)' . $keyword;
+$config['per_page'] = 20;
+$config['num_links'] = 9;
+$config['prev_link'] = '&laquo; Trước';
+$config['next_link'] = 'Sau &raquo;';
+
+$paginate = new Paginate();
+$paginate->initialize($config);
+
+$matches = $paginate->get_array($matches);
+
+?>
+<!DOCTYPE html>
+<html>
+<title>W3.CSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<body class="w3-light-gray">
+
+<div class="w3-container">
+
+<form action="" method="get">
+	<input type="text" name="text" class="w3-input">
+	<input type="submit" value="Search" class="w3-button w3-green">
+</form>
+
+<?php if (isset($matches)): ?>
+	<h2><?= count($data) ?> truyện</h2>
+	<?php $count = 1 ?>
+	<?php foreach ($matches as $row): ?>
+		
+		<div class="w3-section w3-border w3-round w3-padding w3-white">
+			<h3 class="w3-medium"><a href="https://docs.google.com/uc?id=<?= $row['drive_id'] ?>"><?= $row['tieude'] ?></a></h3>
+			<span class="w3-tag w3-small" id="<?= $count ?>">#<?= $count ?></span>
+			<span class="w3-tag w3-small"><?= $row['count_chapter'] ?> chương</span>
+			<span class="w3-tag w3-small"><?= myfilesize($row['size']) ?></span>
+			<p class="w3-small w3-text-gray"><?= $row['mota'] ?></p>
+		</div>
+
+		<?php $count++ ?>
+	<?php endforeach ?>
+<?php endif ?>
+
+<?php echo $paginate->w3_create_links(); ?>
+
+</div>
+
+</body>
+</html>
+
+<?php
+
+function myfilesize($size, $precision = 2) {
+	static $units = array('B','KB','MB','GB','TB','PB','EB','ZB','YB');
+	$step = 1024;
+	$i = 0;
+	while (($size / $step) > 0.9) {
+		$size = $size / $step;
+		$i++;
+	}
+	return round($size, $precision).$units[$i];
 }
