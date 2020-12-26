@@ -18,6 +18,7 @@ if (isset($_GET['txt'])) {
 	echo "{$tieude[1]}\n";
 	$nd = str_replace(". ", ".\n\n", wp_strip_all_tags($con[1], true));
 	$nd = str_replace(array('０', '１', '２', '３', '４', '５', '６', '７', '８', '９'), array('0', '1', '2', '3', '4', '5', '6','7', '8', '9'), $nd);
+	echo $nd;
 	echo "\n\n";
 } else {
 	echo '<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">';
