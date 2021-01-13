@@ -22,7 +22,7 @@ if (isset($_GET['txt'])) {
 } else {
 	echo '<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">';
 	echo '<h1>' . $tieude[1] . '</h1>';
-	echo '<div>' . $con[1] . '</div>';
+	echo '<div>' . normalize($con[1]) . '</div>';
 }
 
 
