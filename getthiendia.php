@@ -21,7 +21,7 @@ foreach ($listContent[1] as $key => $value) {
 	if (preg_match('/bbCodeQuote/', $value)) {
 		unset($listContent[1][$key]);
 	}
-	if (mb_strlen($value, 'UTF-8') < 1500) {
+	if (strlen($value) < 1700) {
 		unset($listContent[1][$key]);
 	}
 }
