@@ -29,7 +29,7 @@ foreach ($listContent[1] as $key => $value) {
 foreach ($listContent[1] as $value) {
 	$value = preg_replace('@<ul class="samTextUnit samThreadPostMessageInside">.+?</ul>@si', '', $value);
 	$value = strip_all_tags($value, true) . "\n\n";
-	$data[] = $value;
+	$data[] = htmlspecialchars_decode($value);
 }
 
 file_put_contents(slug($link) . '.txt', $data);
