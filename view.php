@@ -13,18 +13,39 @@ preg_match('@<h1 class="page-title">(.+?)</h1>@si', $single_curl, $tieude);
 // content
 preg_match('@<div class="page-content font-large">(.+?)</div>@si', $single_curl, $con);
 
+preg_match_all('/> *【 *(\d+) *】 *</', $con[1], $pages);
+$nd = preg_replace('/<center class="chapterPages">.+?<\/center>/', '', $con[1]);
+$nd = preg_replace('/<font color="blue">.+?<\/font>/', '', $nd);
+$nd = str_replace('Mới nhất chương thỉnh phỏng vấn https://m.sinodan.cc<p>', '', $nd);
+
+if (isset($_GET['list'])) {
+	if (!empty($pages[1])) {
+		foreach ($pages[1] as $page) {
+			$urls[] = base_url() . 'view.php?id=' . $id . '_' . $page . '&txt';
+		}
+		echo multi_curl($urls);
+	}
+	exit;
+}
+
+
 if (isset($_GET['txt'])) {
 	echo header("Content-Type: text/plain");
 	echo "{$tieude[1]}\n";
-	$nd = str_replace(". ", ".\n\n", wp_strip_all_tags($con[1], true));
+	$nd = str_replace(". ", ".\n\n", wp_strip_all_tags($nd, true));
 	echo normalize($nd);
 	echo "\n\n";
 } else {
 	echo '<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">';
 	echo '<h1>' . $tieude[1] . '</h1>';
-	echo '<div>' . normalize($con[1]) . '</div>';
+	if (!empty($pages[1])) {
+		echo '<h2><a href="?id=' . $id . '&list">Tai ve</a></h2>';
+		foreach ($pages[1] as $page) {
+			echo '<a href="?id='.$id.'_'.$page.'">['.$page.']</a>';
+		}
+	}
+	echo '<div>' . normalize($nd) . '</div>';
 }
-
 
 function normalize($text = '')
 {

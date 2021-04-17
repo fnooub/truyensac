@@ -1,5 +1,10 @@
 <?php
 
+function base_url($uri = '')
+{
+	return 'http://truyensac.herokuapp.com/' . $uri;
+}
+
 function d04($int)
 {
 	return sprintf( "%04d", $int );
