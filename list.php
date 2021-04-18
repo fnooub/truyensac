@@ -130,7 +130,7 @@ echo ' | <a href="list.php?id=' . $id . $nextpg . '&list_download">Tai ve list</
 echo ' | <a href="list.php?id=' . $id . $nextpg . '&view">Xem HTML</a>';
 echo ' | <a href="list.php?id=' . $id . $nextpg . '&view&txt">Xem TXT</a>';
 echo ' | <a href="list.php?id=' . $id . $nextpg . '&get&txt">Get TXT</a>';
-echo ' | <a href="list.php?id=' . $id . '&merge">Get TXT2</a>';
+echo ' | <a href="ts_' . $id . '.txt">Get TXT2</a>';
 echo '<hr>';
 
 for ($i=0; $i < count($links[1]); $i++) { 
