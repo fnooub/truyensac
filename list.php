@@ -112,6 +112,16 @@ if (isset($_GET['list_download']) && $id) {
 	exit;
 }
 
+if (isset($_GET['merge'])) {
+	header("Content-Type: text/plain");
+	//header('Content-Disposition: attachment; filename=' . $id . '.txt');
+	for ($i=0; $i < count($links[1]); $i++) { 
+		$urls[] = base_url() . 'view.php?id=' . $links[1][$i] . '&list';
+	}
+	echo multi_curl($urls);
+	exit();
+}
+
 echo '<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>a { text-decoration: none }</style>';
 echo '<h1>' . $tieude[1] . '</h1>';
 echo '<p>' . $mota[1] . '</p>';
@@ -120,6 +130,7 @@ echo ' | <a href="list.php?id=' . $id . $nextpg . '&list_download">Tai ve list</
 echo ' | <a href="list.php?id=' . $id . $nextpg . '&view">Xem HTML</a>';
 echo ' | <a href="list.php?id=' . $id . $nextpg . '&view&txt">Xem TXT</a>';
 echo ' | <a href="list.php?id=' . $id . $nextpg . '&get&txt">Get TXT</a>';
+echo ' | <a href="list.php?id=' . $id . '&merge">Get TXT2</a>';
 echo '<hr>';
 
 for ($i=0; $i < count($links[1]); $i++) { 
