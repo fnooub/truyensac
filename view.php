@@ -19,6 +19,7 @@ $nd = preg_replace('/<font color="blue">.+?<\/font>/', '', $nd);
 $nd = str_replace('Mới nhất chương thỉnh phỏng vấn https://m.sinodan.cc<p>', '', $nd);
 
 if (isset($_GET['list'])) {
+	header("Content-Type: text/plain");
 	if (!empty($pages[1])) {
 		foreach ($pages[1] as $page) {
 			$urls[] = base_url() . 'view.php?id=' . $id . '_' . $page . '&txt';
@@ -30,7 +31,7 @@ if (isset($_GET['list'])) {
 
 
 if (isset($_GET['txt'])) {
-	echo header("Content-Type: text/plain");
+	header("Content-Type: text/plain");
 	echo "{$tieude[1]}\n";
 	$nd = str_replace(". ", ".\n\n", wp_strip_all_tags($nd, true));
 	echo normalize($nd);
