@@ -43,7 +43,7 @@ if (isset($_GET['txt'])) {
 	echo '<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">';
 	echo '<h1>' . $tieude[1] . '</h1>';
 	if (!empty($pages[1])) {
-		echo '<h2><a href="?id=' . $id . '&list">Tai ve</a></h2>';
+		echo '<h2><a href="?id=' . $id . '&list">Tai ve</a>|<a href="?id=' . $id . '&list&dl">Tai ve2</a></h2>';
 		foreach ($pages[1] as $page) {
 			echo '<a href="?id='.$id.'_'.$page.'">['.$page.']</a>';
 		}
