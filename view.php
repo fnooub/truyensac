@@ -19,6 +19,9 @@ $nd = preg_replace('/<font color="blue">.+?<\/font>/', '', $nd);
 $nd = str_replace('Mới nhất chương thỉnh phỏng vấn https://m.sinodan.cc<p>', '', $nd);
 
 if (isset($_GET['list'])) {
+	if (isset($_GET['dl'])) {
+		header('Content-Disposition: attachment; filename=' . $tieude[1] . '.txt');
+	}
 	header("Content-Type: text/plain");
 	if (!empty($pages[1])) {
 		foreach ($pages[1] as $page) {
