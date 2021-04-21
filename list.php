@@ -131,6 +131,7 @@ echo ' | <a href="list.php?id=' . $id . $nextpg . '&view">Xem HTML</a>';
 echo ' | <a href="list.php?id=' . $id . $nextpg . '&view&txt">Xem TXT</a>';
 echo ' | <a href="list.php?id=' . $id . $nextpg . '&get&txt">Get TXT</a>';
 echo ' | <a href="ts_' . $id . '.txt">Get TXT2</a>';
+echo ' | <a href="https://m.sinodan.cc/list/' . $id . '.html">link goc</a>';
 echo '<hr>';
 
 for ($i=0; $i < count($links[1]); $i++) { 
